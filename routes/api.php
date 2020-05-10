@@ -28,7 +28,7 @@ Route::get('news/{id}', 'NewsController@show');
 Route::post('news', 'NewsController@store');
 
 // Update a news
-Route::put('news/{id}', 'NewsController@store');
+Route::put('news', 'NewsController@store');
 
 // Delete a news
 Route::delete('news/{id}', 'NewsController@destroy');
