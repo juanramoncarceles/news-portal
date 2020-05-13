@@ -16,7 +16,7 @@ class NewsController extends Controller
     public function index()
     {
         // Get news
-        $news = News::paginate(10);
+        $news = News::orderBy('publication_date', 'desc')->paginate(10);
 
         // Return collection of news as a resource
         return NewsResource::collection($news);
