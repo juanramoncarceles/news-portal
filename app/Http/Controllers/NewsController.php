@@ -13,10 +13,26 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get news
-        $news = News::orderBy('publication_date', 'desc')->paginate(10);
+        if ($request->route()->named('featured')) { // This may no be useful, use query params instead.
+            $news = News::paginate(5);
+        } else {
+            // Get news
+            $news = News::orderBy('publication_date', 'desc')->paginate(10);
+        }
+
+        // If I use query parameters to filter by category.
+        // $category = $request->query('category');
+        // if ($category) {
+        //     // Convert to array and use the values..
+        //     error_log($category);
+        // }
+        // $excludeCategory = $request->query('excludeCategory');
+        // if ($excludeCategory) {
+        //     // Convert to array and use the values..
+        //     error_log($excludeCategory);
+        // }
 
         // Return collection of news as a resource
         return NewsResource::collection($news);

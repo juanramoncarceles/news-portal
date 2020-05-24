@@ -21,14 +21,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // List news
 Route::get('news', 'NewsController@index');
 
+// List only featured news
+Route::get('news/featured', 'NewsController@index')->name('featured');
+
 // List a single news
 Route::get('news/{id}', 'NewsController@show');
 
 // Create a new news
-Route::post('news', 'NewsController@store');
-
+//Route::post('news', 'NewsController@store');
 // Update a news
-Route::put('news', 'NewsController@store');
+//Route::put('news', 'NewsController@store');
+//
+Route::match(['post', 'put'], 'news', 'NewsController@store');
 
 // Delete a news
 Route::delete('news/{id}', 'NewsController@destroy');
