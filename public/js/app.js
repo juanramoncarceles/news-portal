@@ -1918,6 +1918,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1939,11 +1954,27 @@ __webpack_require__.r(__webpack_exports__);
     fetchNews: function fetchNews() {
       var _this = this;
 
-      fetch("api/news").then(function (res) {
+      var page_url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/api/news";
+      //let vm = this;
+      fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
         _this.newsList = res.data;
+
+        _this.makePagination(res.meta, res.links); //vm.
+
+      })["catch"](function (err) {
+        return console.log(err);
       });
+    },
+    makePagination: function makePagination(meta, links) {
+      var pagination = {
+        current_page: meta.current_page,
+        last_page: meta.last_page,
+        next_page_url: links.next,
+        prev_page_url: links.prev
+      };
+      this.pagination = pagination;
     }
   }
 });
@@ -20326,6 +20357,65 @@ var render = function() {
     "div",
     [
       _c("h2", [_vm._v("News")]),
+      _vm._v(" "),
+      _c("nav", { attrs: { "aria-label": "Page navigation" } }, [
+        _c("ul", { staticClass: "pagination" }, [
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.prev_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchNews(_vm.pagination.prev_page_url)
+                    }
+                  }
+                },
+                [_vm._v("Previous")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item disabled" }, [
+            _c("a", { staticClass: "page-link text-dark" }, [
+              _vm._v(
+                "Page " +
+                  _vm._s(_vm.pagination.current_page) +
+                  " of " +
+                  _vm._s(_vm.pagination.last_page)
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.next_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchNews(_vm.pagination.next_page_url)
+                    }
+                  }
+                },
+                [_vm._v("Next")]
+              )
+            ]
+          )
+        ])
+      ]),
       _vm._v(" "),
       _vm._l(_vm.newsList, function(news) {
         return _c("div", { key: news.id, staticClass: "card card-body mb-2" }, [
