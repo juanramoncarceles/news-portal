@@ -27,6 +27,7 @@ class NewsController extends Controller
             $value = $request->input('featured');
             if ($value === "only") {
                 // where('featured', true);
+                $zzz = News::where('featured', 1)->paginate(4);
                 error_log("Requested only.");
             } else if ($value == "exclude") {
                 // where('featured', '!=', true); // or where('featured', false);
@@ -41,7 +42,7 @@ class NewsController extends Controller
         }
 
         // Return collection of news as a resource
-        return NewsResource::collection($yyy);
+        return NewsResource::collection($zzz);
     }
 
     /**
