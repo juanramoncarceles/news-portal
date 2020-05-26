@@ -15,27 +15,33 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->route()->named('featured')) { // This may no be useful, use query params instead.
-            $news = News::paginate(5);
+        if ($request->route()->named('featured')) { // Si no lo hago asi con ruta lo puedo hacer con un parametro como where('featured', 'only')
+            // TODO Filter only the ones featured.
+            $news = News::paginate(4);
         } else {
-            // Get news
+            // Get the news
             $news = News::orderBy('publication_date', 'desc')->paginate(10);
         }
 
-        // If I use query parameters to filter by category.
-        // $category = $request->query('category');
-        // if ($category) {
-        //     // Convert to array and use the values..
-        //     error_log($category);
-        // }
-        // $excludeCategory = $request->query('excludeCategory');
-        // if ($excludeCategory) {
-        //     // Convert to array and use the values..
-        //     error_log($excludeCategory);
-        // }
+        if ($request->has('featured')) {
+            $value = $request->input('featured');
+            if ($value === "only") {
+                // where('featured', true);
+                error_log("Requested only.");
+            } else if ($value == "exclude") {
+                // where('featured', '!=', true); // or where('featured', false);
+                error_log("Requested only non.");
+            }
+        }
+
+        // The query parameters to filter by category.
+        if ($request->has('category')) {            
+            $categories = explode(',', $request->input('category'));
+            $yyy = News::whereIn('category_id', $categories)->paginate(4);
+        }
 
         // Return collection of news as a resource
-        return NewsResource::collection($news);
+        return NewsResource::collection($yyy);
     }
 
     /**

@@ -23,6 +23,7 @@ class News extends JsonResource
             'author' => $this->author,
             'body' => $this->body,
             'summary' => $this->summary,
+            'category' => ($this->category->name) ?? $this->category,
             'main_image' => $this->main_image
         ];
     }
