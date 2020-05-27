@@ -15,17 +15,16 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        // Another option would be to use conditional clauses https://laravel.com/docs/7.x/queries#conditional-clauses
+        $newsQuery = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc');
         
         if ($request->has('paginate')) { // If there are both 'paginate' and 'limit' the second would be ignored by Laravel.
-            // If the value is empty Laravel will paginate by 15 by default.
-            $news = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc')->paginate($request->paginate);
-        } else if ($request->has('limit')) {
-            // If the value is empty no limit will be applied.
-            $news = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc')->limit($request->limit)->get();
+            // If the 'paginate' value is empty I paginate by 15.
+            $paginate = $request->paginate ?? 15;
+            $news = $newsQuery->paginate($request->paginate);
         } else {
-            // When there is no limit nor paginate then I set a limit of 15.
-            $news = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc')->limit(15)->get();
+            // If the 'limit' value is not present or empty I limit it to 15.
+            $limit = $request->limit ?? 15;
+            $news = $newsQuery->limit($limit)->get();
         }
 
         // Return collection of news as a resource
