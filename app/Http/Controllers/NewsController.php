@@ -15,34 +15,21 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->route()->named('featured')) { // Si no lo hago asi con ruta lo puedo hacer con un parametro como where('featured', 'only')
-            // TODO Filter only the ones featured.
-            $news = News::paginate(4);
+        // Another option would be to use conditional clauses https://laravel.com/docs/7.x/queries#conditional-clauses
+        
+        if ($request->has('paginate')) { // If there are both 'paginate' and 'limit' the second would be ignored by Laravel.
+            // If the value is empty Laravel will paginate by 15 by default.
+            $news = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc')->paginate($request->paginate);
+        } else if ($request->has('limit')) {
+            // If the value is empty no limit will be applied.
+            $news = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc')->limit($request->limit)->get();
         } else {
-            // Get the news
-            $news = News::orderBy('publication_date', 'desc')->paginate(10);
-        }
-
-        if ($request->has('featured')) {
-            $value = $request->input('featured');
-            if ($value === "only") {
-                // where('featured', true);
-                $zzz = News::where('featured', 1)->paginate(4);
-                error_log("Requested only.");
-            } else if ($value == "exclude") {
-                // where('featured', '!=', true); // or where('featured', false);
-                error_log("Requested only non.");
-            }
-        }
-
-        // The query parameters to filter by category.
-        if ($request->has('category')) {            
-            $categories = explode(',', $request->input('category'));
-            $yyy = News::whereIn('category_id', $categories)->paginate(4);
+            // When there is no limit nor paginate then I set a limit of 15.
+            $news = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc')->limit(15)->get();
         }
 
         // Return collection of news as a resource
-        return NewsResource::collection($zzz);
+        return NewsResource::collection($news);
     }
 
     /**

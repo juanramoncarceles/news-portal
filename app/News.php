@@ -10,4 +10,38 @@ class News extends Model
     {
         return $this->belongsTo('App\NewsCategory')->select(['id', 'name']);
     }
+
+    /**
+     * Scope a query to only include featured news.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFeatured($query, $option)
+    {
+        if (!Empty($option)) {
+            if ($option === "only") {
+                return $query->where('featured', 1);
+            } else if ($option === "exclude") {
+                return $query->where('featured', 0);
+            }
+        }
+        return $query;
+    }
+
+    /**
+     * Scope a query to only include news with the given categories.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $category
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfCategories($query, $categories)
+    {
+        if (!Empty($categories)) {
+            $categoriesArr = explode(',', $categories);
+            return $query->whereIn('category_id', $categoriesArr);
+        }
+        return $query;
+    }
 }
