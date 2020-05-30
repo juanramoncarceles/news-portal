@@ -11,13 +11,15 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $newsQuery = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc');
         
-        if ($request->has('paginate')) { // If there are both 'paginate' and 'limit' the second would be ignored by Laravel.
+        // If there are both 'paginate' and 'limit' the second would be ignored by Laravel.
+        if ($request->has('paginate')) {
             // If the 'paginate' value is empty I paginate by 15.
             $paginate = $request->paginate ?? 15;
             $news = $newsQuery->paginate($request->paginate);

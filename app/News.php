@@ -15,6 +15,7 @@ class News extends Model
      * Scope a query to only include featured news.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  String  $option
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFeatured($query, $option)
@@ -33,7 +34,7 @@ class News extends Model
      * Scope a query to only include news with the given categories.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  mixed  $category
+     * @param  String  $categories
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOfCategories($query, $categories)
