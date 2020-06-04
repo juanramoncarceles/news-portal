@@ -24,7 +24,7 @@ class News extends JsonResource
             'body' => $this->body,
             'summary' => $this->summary,
             'category' => ($this->category->name) ?? $this->category,
-            'main_image' => $this->main_image
+            'main_image' => asset('storage/' . $this->main_image)
         ];
     }
 }
