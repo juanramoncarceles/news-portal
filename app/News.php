@@ -11,6 +11,11 @@ class News extends Model
         return $this->belongsTo('App\NewsCategory')->select(['id', 'name']);
     }
 
+    public function mainImage()
+    {
+        return $this->belongsTo('App\Image')->select(['id', 'name', 'title', 'alt']);
+    }
+
     /**
      * Scope a query to only include featured news.
      *

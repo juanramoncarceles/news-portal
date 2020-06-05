@@ -15,7 +15,7 @@ class News extends JsonResource
     public function toArray($request)
     {
         //return parent::toArray($request);
-
+        //error_log($this->mainImage->alt);
         return [
             'id' => $this->id,
             'publication_date' => $this->publication_date,
@@ -24,7 +24,8 @@ class News extends JsonResource
             'body' => $this->body,
             'summary' => $this->summary,
             'category' => ($this->category->name) ?? $this->category,
-            'main_image' => asset('storage/' . $this->main_image)
+            'main_image' => $this->mainImage
+            //'main_image' => $this->mainImage ? asset('storage/' . $this->mainImage->name) : ''
         ];
     }
 }
