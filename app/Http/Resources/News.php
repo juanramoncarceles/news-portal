@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\MainImage as MainImageResource;
 
 class News extends JsonResource
 {
@@ -14,8 +15,6 @@ class News extends JsonResource
      */
     public function toArray($request)
     {
-        //return parent::toArray($request);
-        //error_log($this->mainImage->alt);
         return [
             'id' => $this->id,
             'publication_date' => $this->publication_date,
@@ -24,8 +23,7 @@ class News extends JsonResource
             'body' => $this->body,
             'summary' => $this->summary,
             'category' => ($this->category->name) ?? $this->category,
-            'main_image' => $this->mainImage
-            //'main_image' => $this->mainImage ? asset('storage/' . $this->mainImage->name) : ''
+            'main_image' => new MainImageResource($this->mainImage)
         ];
     }
 }
