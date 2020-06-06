@@ -22,7 +22,7 @@ class NewsController extends Controller
         if ($request->has('paginate')) {
             // If the 'paginate' value is empty I paginate by 15.
             $paginate = $request->paginate ?? 15;
-            $news = $newsQuery->paginate($request->paginate);
+            $news = $newsQuery->paginate($request->paginate)->withQueryString();
         } else {
             // If the 'limit' value is not present or empty I limit it to 15.
             $limit = $request->limit ?? 15;

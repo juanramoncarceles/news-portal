@@ -44,7 +44,7 @@ export default {
   },
 
   methods: {
-    fetchNews(page_url = "/api/news") {
+    fetchNews(page_url = "/api/news?paginate=10") {
       //let vm = this;
       fetch(page_url)
         .then(res => res.json())

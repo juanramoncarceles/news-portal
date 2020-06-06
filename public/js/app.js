@@ -1954,7 +1954,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchNews: function fetchNews() {
       var _this = this;
 
-      var page_url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/api/news";
+      var page_url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/api/news?paginate=10";
       //let vm = this;
       fetch(page_url).then(function (res) {
         return res.json();
