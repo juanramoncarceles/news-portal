@@ -21,6 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // List news
 Route::get('news', 'NewsController@index');
 
+// List news categories
+Route::get('categories', 'NewsCategoryController@index');
+
 // List a single news
 Route::get('news/{id}', 'NewsController@show');
 

@@ -30,9 +30,11 @@
               aria-expanded="false"
             >Categorias</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item">Action</a>
-              <a class="dropdown-item">Another action</a>
-              <a class="dropdown-item">Something else here</a>
+              <a
+                class="dropdown-item"
+                v-for="category in categoriesList"
+                v-bind:key="category.id"
+              >{{ category.name }}</a>
             </div>
           </li>
           <li class="nav-item">
@@ -56,16 +58,16 @@ export default {
     };
   },
 
-  // created() {
-  //   this.fetchCategories();
-  // },
+  created() {
+    this.fetchCategories();
+  },
 
   methods: {
     fetchCategories() {
       fetch("/api/categories")
         .then(res => res.json())
         .then(res => {
-          this.categoriesList = res.data;
+          this.categoriesList = res;
         })
         .catch(err => console.log(err));
     }
