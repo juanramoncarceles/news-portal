@@ -12,6 +12,7 @@
         <div id="app">
             <navbar></navbar>
             <div class="container">
+                <featurednews></featurednews>
                 <news></news>
             </div>
         </div>

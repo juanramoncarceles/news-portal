@@ -20,6 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('navbar', require('./components/Navbar.vue').default);
+Vue.component('featurednews', require('./components/FeaturedNews.vue').default);
 Vue.component('news', require('./components/News.vue').default);
 
 /**
