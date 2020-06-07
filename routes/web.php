@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Capture all get paths and let Vue Router handle them.
-Route::get('/{any}', function ($any) {
+Route::get('/{any}', function () {
     return view('index');
 })->where('any', '.*');

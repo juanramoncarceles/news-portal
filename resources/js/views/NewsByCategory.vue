@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h2>Featured News</h2>
+    <h2>News for category</h2>
+    <p>This is the category {{ this.$route.params.id }}</p>
     <div class="card card-body mb-2" v-for="news in newsList" :key="news.id">
       <h3>{{ news.title }}</h3>
       <p>{{ news.body }}</p>
@@ -13,25 +14,24 @@
 export default {
   data() {
     return {
-      newsList: [],
-      news: {
-        id: "",
-        title: "",
-        body: "",
-        category: ""
-      },
-      news_id: "",
-      edit: false
+      newsList: []
     };
   },
 
+  watch: {
+    // When the route changes the function will be called.
+    $route: function(newRoute, oldRoute) {
+      this.fetchNewsByCategory(newRoute.params.id);
+    }
+  },
+
   created() {
-    this.fetchFeaturedNews(4);
+    this.fetchNewsByCategory(this.$route.params.id);
   },
 
   methods: {
-    fetchFeaturedNews(amount = 10) {
-      fetch(`/api/news?featured=only&limit=${amount}`)
+    fetchNewsByCategory(categoryId = 1) {
+      fetch(`${window.location.origin}/api/news?category=${categoryId}`)
         .then(res => res.json())
         .then(res => {
           this.newsList = res.data;

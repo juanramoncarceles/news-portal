@@ -15,11 +15,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">
               Inicio
               <span class="sr-only">(current)</span>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -30,15 +30,16 @@
               aria-expanded="false"
             >Categorias</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a
+              <router-link
                 class="dropdown-item"
                 v-for="category in categoriesList"
-                v-bind:key="category.id"
-              >{{ category.name }}</a>
+                :key="category.id"
+                :to="{ name: 'Category', params: { id: category.id } }"
+              >{{ category.name }}</router-link>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link">Contacto</a>
+            <router-link class="nav-link" to="/contact">Contacto</router-link>
           </li>
         </ul>
       </div>
