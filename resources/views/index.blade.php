@@ -11,9 +11,16 @@
     <body>
         <div id="app">
             <navbar></navbar>
-            <div class="container">
+            <!-- <div class="container">
                 <featurednews></featurednews>
                 <news></news>
+            </div> -->
+            <ul>
+                <li><router-link to="/">Home</router-link></li>
+                <li><router-link to="/contact">Contact</router-link></li>
+            </ul>
+            <div>
+                <router-view></router-view>
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>

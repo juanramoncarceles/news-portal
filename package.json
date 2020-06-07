@@ -22,6 +22,7 @@
     "dependencies": {
         "axios": "^0.19.2",
         "jquery": "^3.5.1",
-        "popper.js": "^1.14.3"
+        "popper.js": "^1.14.3",
+        "vue-router": "^3.3.2"
     }
 }

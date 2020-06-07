@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+// Capture all get paths and let Vue Router handle them.
+Route::get('/{any}', function ($any) {
     return view('index');
-});
+})->where('any', '.*');
