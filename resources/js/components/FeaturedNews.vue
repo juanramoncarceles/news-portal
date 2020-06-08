@@ -2,14 +2,8 @@
   <div>
     <h2>Featured News</h2>
     <div class="row">
-      <!-- <div class="card card-body col-md-6 mb-2" v-for="news in newsList" :key="news.id">
-        <h3>{{ news.title }}</h3>
-        <p>{{ news.body }}</p>
-        <p>{{ news.category }}</p>
-      </div>-->
-
-      <div class="card-deck">
-        <div class="card" v-for="news in newsList" :key="news.id">
+      <div class="col-md-6 mb-4" v-for="news in newsList" :key="news.id">
+        <div class="card">
           <img
             class="card-img-top"
             :src="news.main_image ? news.main_image.url : ''"
@@ -17,9 +11,13 @@
             :title="news.main_image ? news.main_image.title : ''"
           />
           <div class="card-body">
-            <h5 class="card-title">{{ news.title }}</h5>
-            <router-link :to="{ name: 'News', params: { id: news.id } }">Read more</router-link>
-            <p class="card-text">{{ news.body }}</p>
+            <h4 class="card-title">{{ news.title }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted">{{ news.author }}</h6>
+            <p class="card-text">{{ news.summary }}</p>
+            <router-link
+              class="btn btn-primary"
+              :to="{ name: 'News', params: { id: news.id } }"
+            >Read more</router-link>
           </div>
           <div class="card-footer">
             <small class="text-muted">{{ news.category }}</small>
