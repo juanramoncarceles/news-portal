@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Featured News</h2>
+    <h2 class="mb-4">Featured News</h2>
     <div class="row">
       <div class="col-md-6 mb-4" v-for="news in newsList" :key="news.id">
         <div class="card">
@@ -33,14 +33,6 @@ export default {
   data() {
     return {
       newsList: []
-      // news: {
-      //   id: "",
-      //   title: "",
-      //   body: "",
-      //   category: ""
-      // },
-      // news_id: "",
-      // edit: false
     };
   },
 

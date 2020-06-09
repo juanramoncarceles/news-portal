@@ -32,7 +32,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <router-link
                 class="dropdown-item"
-                v-for="category in categoriesList"
+                v-for="category in this.categoriesData"
                 :key="category.id"
                 :to="{ name: 'Category', params: { id: category.id } }"
               >{{ category.name }}</router-link>
@@ -49,28 +49,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      categoriesList: [],
-      category: {
-        id: "",
-        name: ""
-      }
-    };
-  },
-
-  created() {
-    this.fetchCategories();
-  },
-
-  methods: {
-    fetchCategories() {
-      fetch("/api/categories")
-        .then(res => res.json())
-        .then(res => {
-          this.categoriesList = res;
-        })
-        .catch(err => console.log(err));
+  props: {
+    categoriesData: {
+      type: Array
     }
   }
 };

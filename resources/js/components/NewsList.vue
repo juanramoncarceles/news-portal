@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>News</h2>
+    <h2 class="mb-4">Other news</h2>
     <nav aria-label="Page navigation">
       <ul class="pagination">
         <li
@@ -28,7 +28,7 @@
       :to="{ name: 'News', params: { id: news.id } }"
       tag="div"
       v-for="news in newsList"
-      v-bind:key="news.id"
+      :key="news.id"
       style="cursor:pointer"
     >
       <news-item-card-small :newsItemData="news" class="mb-3"></news-item-card-small>
@@ -41,14 +41,7 @@ export default {
   data() {
     return {
       newsList: [],
-      // news: {
-      //   id: "",
-      //   title: "",
-      //   body: ""
-      // },
-      // news_id: "",
       pagination: {}
-      // edit: false
     };
   },
 

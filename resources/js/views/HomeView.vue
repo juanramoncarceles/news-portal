@@ -1,6 +1,7 @@
 <template>
   <div>
     <featured-news></featured-news>
-    <news-list></news-list>
+    <hr />
+    <news-list class="mt-5"></news-list>
   </div>
 </template>

@@ -1,8 +1,14 @@
 <template>
   <div>
-    <h2>{{ newsItem.title }}</h2>
-    <p>This is the news id {{ this.$route.params.id }}</p>
-    <div class>
+    <h2 class="mb-4">{{ newsItem.title }}</h2>
+    <img
+      class="main-image mb-4"
+      :src="newsItem.main_image ? newsItem.main_image.url : ''"
+      :alt="newsItem.main_image ? newsItem.main_image.alt : ''"
+      :title="newsItem.main_image ? newsItem.main_image.title : ''"
+    />
+    <p>{{ newsItem.author }}</p>
+    <div>
       <p>{{ newsItem.category }}</p>
       <p>{{ newsItem.body }}</p>
     </div>
@@ -33,3 +39,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.main-image {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+</style>
