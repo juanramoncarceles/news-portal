@@ -17,7 +17,7 @@ class News extends Model
     }
 
     /**
-     * Scope a query to only include featured news.
+     * Scope a query to only include or exclude featured news.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  String  $option
@@ -49,5 +49,20 @@ class News extends Model
             return $query->whereIn('category_id', $categoriesArr);
         }
         return $query;
+    }
+
+    /**
+     * Scope a query to exclude news with the given ids.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  String  $ids
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeExclude($query, $ids)
+    {
+        if (!Empty($ids)) {
+            $idsArr = explode(',', $ids);
+            return $query->whereNotIn('id', $idsArr);
+        }
     }
 }

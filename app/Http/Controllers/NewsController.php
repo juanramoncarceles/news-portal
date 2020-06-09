@@ -16,7 +16,10 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $newsQuery = News::featured($request->featured)->ofCategories($request->category)->orderBy('publication_date', 'desc');
+        $newsQuery = News::exclude($request->exclude)
+                            ->featured($request->featured)
+                            ->ofCategories($request->category)
+                            ->orderBy('publication_date', 'desc');
         
         // If there are both 'paginate' and 'limit' the second would be ignored by Laravel.
         if ($request->has('paginate')) {
