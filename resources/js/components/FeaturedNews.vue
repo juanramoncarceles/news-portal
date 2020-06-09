@@ -46,6 +46,10 @@ export default {
         .then(res => res.json())
         .then(res => {
           this.newsList = res.data;
+          this.$emit(
+            "featuredIds",
+            this.newsList.map(news => news.id)
+          );
         })
         .catch(err => console.log(err));
     }

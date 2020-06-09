@@ -38,6 +38,15 @@
 
 <script>
 export default {
+  props: {
+    excludeIds: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    }
+  },
+
   data() {
     return {
       newsList: [],
@@ -50,7 +59,11 @@ export default {
   },
 
   methods: {
-    fetchNewsPaginated(page_url = "/api/news?paginate=10") {
+    fetchNewsPaginated(
+      page_url = `/api/news?paginate=10${
+        this.excludeIds.length > 0 ? "&exclude=" + this.excludeIds.join() : ""
+      }`
+    ) {
       fetch(page_url)
         .then(res => res.json())
         .then(res => {
