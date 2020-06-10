@@ -25,7 +25,7 @@ class News extends Model
      */
     public function scopeFeatured($query, $option)
     {
-        if (!Empty($option)) {
+        if (!empty($option)) {
             if ($option === "only") {
                 return $query->where('featured', 1);
             } else if ($option === "exclude") {
@@ -44,7 +44,7 @@ class News extends Model
      */
     public function scopeOfCategories($query, $categories)
     {
-        if (!Empty($categories)) {
+        if (isset($categories)) {
             $categoriesArr = explode(',', $categories);
             return $query->whereIn('category_id', $categoriesArr);
         }
@@ -60,7 +60,7 @@ class News extends Model
      */
     public function scopeExclude($query, $ids)
     {
-        if (!Empty($ids)) {
+        if (!empty($ids)) {
             $idsArr = explode(',', $ids);
             return $query->whereNotIn('id', $idsArr);
         }
