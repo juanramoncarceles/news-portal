@@ -2268,6 +2268,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     categoriesData: {
@@ -2278,7 +2283,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       newsList: [],
       categoryId: this.$route.params.id,
-      categoryName: ""
+      categoryName: "",
+      notFoundMsg: ""
     };
   },
   watch: {
@@ -2308,12 +2314,19 @@ __webpack_require__.r(__webpack_exports__);
         return res.json();
       }).then(function (res) {
         _this.newsList = res.data;
+
+        if (res.data.length === 0) {
+          _this.notFoundMsg = "No news for that category could be found or fetched.";
+          console.warn(_this.notFoundMsg);
+        }
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     setCategoryName: function setCategoryName(id) {
-      this.categoryName = this.categoriesData[id - 1].name;
+      if (id > 0 && id <= this.categoriesData.length) {
+        this.categoryName = this.categoriesData[id - 1].name;
+      }
     }
   }
 });
@@ -2346,10 +2359,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      newsItem: {}
+      newsItem: {},
+      notFoundMsg: ""
     };
   },
   created: function created() {
@@ -2360,11 +2379,18 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       fetch("".concat(window.location.origin, "/api/news/").concat(newsItemId)).then(function (res) {
-        return res.json();
+        if (res.ok === true && res.status === 200) {
+          return res.json();
+        } else if (res.statusText) {
+          throw res.statusText;
+        } else {
+          throw "News item couldn't be fetched.";
+        }
       }).then(function (res) {
         _this.newsItem = res.data;
       })["catch"](function (err) {
-        return console.log(err);
+        _this.notFoundMsg = "No news item with id ".concat(newsItemId, " could be found or fetched.");
+        console.warn(err);
       });
     }
   }
@@ -21888,45 +21914,52 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "h2",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: this.categoryName,
-              expression: "this.categoryName"
-            }
-          ],
-          staticClass: "mb-4"
-        },
-        [_vm._v("Noticias de " + _vm._s(this.categoryName))]
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.newsList, function(news) {
-        return _c(
-          "router-link",
-          {
-            key: news.id,
-            staticStyle: { cursor: "pointer" },
-            attrs: { to: { name: "News", params: { id: news.id } }, tag: "div" }
-          },
+  return _c("div", [
+    _vm.newsList.length > 0
+      ? _c(
+          "div",
           [
-            _c("news-item-card-small", {
-              staticClass: "mb-3",
-              attrs: { newsItemData: news }
+            _c(
+              "h2",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: this.categoryName,
+                    expression: "this.categoryName"
+                  }
+                ],
+                staticClass: "mb-4"
+              },
+              [_vm._v("Noticias de " + _vm._s(this.categoryName))]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.newsList, function(news) {
+              return _c(
+                "router-link",
+                {
+                  key: news.id,
+                  staticStyle: { cursor: "pointer" },
+                  attrs: {
+                    to: { name: "News", params: { id: news.id } },
+                    tag: "div"
+                  }
+                },
+                [
+                  _c("news-item-card-small", {
+                    staticClass: "mb-3",
+                    attrs: { newsItemData: news }
+                  })
+                ],
+                1
+              )
             })
           ],
-          1
+          2
         )
-      })
-    ],
-    2
-  )
+      : _c("div", [_c("p", [_vm._v(_vm._s(_vm.notFoundMsg))])])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -21951,25 +21984,57 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h2", { staticClass: "mb-4" }, [_vm._v(_vm._s(_vm.newsItem.title))]),
-    _vm._v(" "),
-    _c("img", {
-      staticClass: "main-image mb-4",
-      attrs: {
-        src: _vm.newsItem.main_image ? _vm.newsItem.main_image.url : "",
-        alt: _vm.newsItem.main_image ? _vm.newsItem.main_image.alt : "",
-        title: _vm.newsItem.main_image ? _vm.newsItem.main_image.title : ""
-      }
-    }),
-    _vm._v(" "),
-    _c("p", [_vm._v(_vm._s(_vm.newsItem.author))]),
-    _vm._v(" "),
-    _c("div", [
-      _c("p", [_vm._v(_vm._s(_vm.newsItem.category))]),
-      _vm._v(" "),
-      _c("p", [_vm._v(_vm._s(_vm.newsItem.body))])
-    ])
+    Object.keys(_vm.newsItem).length > 0
+      ? _c("div", [
+          _c("h2", { staticClass: "mb-4" }, [
+            _vm._v(_vm._s(_vm.newsItem.title))
+          ]),
+          _vm._v(" "),
+          _c("img", {
+            staticClass: "main-image mb-4",
+            attrs: {
+              src: _vm.newsItem.main_image ? _vm.newsItem.main_image.url : "",
+              alt: _vm.newsItem.main_image ? _vm.newsItem.main_image.alt : "",
+              title: _vm.newsItem.main_image
+                ? _vm.newsItem.main_image.title
+                : ""
+            }
+          }),
+          _vm._v(" "),
+          _c("p", [_vm._v(_vm._s(_vm.newsItem.author))]),
+          _vm._v(" "),
+          _c("div", [
+            _c("p", [_vm._v(_vm._s(_vm.newsItem.category))]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.newsItem.body))])
+          ])
+        ])
+      : _c("div", [_c("p", [_vm._v(_vm._s(_vm.notFoundMsg))])])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/NotFoundView.vue?vue&type=template&id=0e919653&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/NotFoundView.vue?vue&type=template&id=0e919653& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_vm._v("Not found")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37623,6 +37688,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_NewsView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./views/NewsView */ "./resources/js/views/NewsView.vue");
 /* harmony import */ var _views_ContactView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./views/ContactView */ "./resources/js/views/ContactView.vue");
 /* harmony import */ var _views_NewsByCategoryView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./views/NewsByCategoryView */ "./resources/js/views/NewsByCategoryView.vue");
+/* harmony import */ var _views_NotFoundView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./views/NotFoundView */ "./resources/js/views/NotFoundView.vue");
+
 
 
 
@@ -37642,6 +37709,10 @@ var routes = [{
 }, {
   path: '/contact',
   component: _views_ContactView__WEBPACK_IMPORTED_MODULE_2__["default"]
+}, {
+  path: '*',
+  name: 'NotFound',
+  component: _views_NotFoundView__WEBPACK_IMPORTED_MODULE_4__["default"]
 }];
 
 /***/ }),
@@ -37919,6 +37990,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewsView_vue_vue_type_template_id_68aa5f92_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewsView_vue_vue_type_template_id_68aa5f92_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/NotFoundView.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/views/NotFoundView.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NotFoundView_vue_vue_type_template_id_0e919653___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NotFoundView.vue?vue&type=template&id=0e919653& */ "./resources/js/views/NotFoundView.vue?vue&type=template&id=0e919653&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _NotFoundView_vue_vue_type_template_id_0e919653___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NotFoundView_vue_vue_type_template_id_0e919653___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/NotFoundView.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/NotFoundView.vue?vue&type=template&id=0e919653&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/views/NotFoundView.vue?vue&type=template&id=0e919653& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFoundView_vue_vue_type_template_id_0e919653___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./NotFoundView.vue?vue&type=template&id=0e919653& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/NotFoundView.vue?vue&type=template&id=0e919653&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFoundView_vue_vue_type_template_id_0e919653___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFoundView_vue_vue_type_template_id_0e919653___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

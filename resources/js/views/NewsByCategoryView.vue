@@ -1,15 +1,20 @@
 <template>
   <div>
-    <h2 class="mb-4" v-show="this.categoryName">Noticias de {{ this.categoryName }}</h2>
-    <router-link
-      :to="{ name: 'News', params: { id: news.id } }"
-      tag="div"
-      v-for="news in newsList"
-      :key="news.id"
-      style="cursor:pointer"
-    >
-      <news-item-card-small :newsItemData="news" class="mb-3"></news-item-card-small>
-    </router-link>
+    <div v-if="newsList.length > 0">
+      <h2 class="mb-4" v-show="this.categoryName">Noticias de {{ this.categoryName }}</h2>
+      <router-link
+        :to="{ name: 'News', params: { id: news.id } }"
+        tag="div"
+        v-for="news in newsList"
+        :key="news.id"
+        style="cursor:pointer"
+      >
+        <news-item-card-small :newsItemData="news" class="mb-3"></news-item-card-small>
+      </router-link>
+    </div>
+    <div v-else>
+      <p>{{ notFoundMsg }}</p>
+    </div>
   </div>
 </template>
 
@@ -25,7 +30,8 @@ export default {
     return {
       newsList: [],
       categoryId: this.$route.params.id,
-      categoryName: ""
+      categoryName: "",
+      notFoundMsg: ""
     };
   },
 
@@ -55,12 +61,18 @@ export default {
         .then(res => res.json())
         .then(res => {
           this.newsList = res.data;
+          if (res.data.length === 0) {
+            this.notFoundMsg = `No news for that category could be found or fetched.`;
+            console.warn(this.notFoundMsg);
+          }
         })
         .catch(err => console.log(err));
     },
 
     setCategoryName(id) {
-      this.categoryName = this.categoriesData[id - 1].name;
+      if (id > 0 && id <= this.categoriesData.length) {
+        this.categoryName = this.categoriesData[id - 1].name;
+      }
     }
   }
 };

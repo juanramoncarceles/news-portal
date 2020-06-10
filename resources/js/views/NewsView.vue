@@ -1,16 +1,21 @@
 <template>
   <div>
-    <h2 class="mb-4">{{ newsItem.title }}</h2>
-    <img
-      class="main-image mb-4"
-      :src="newsItem.main_image ? newsItem.main_image.url : ''"
-      :alt="newsItem.main_image ? newsItem.main_image.alt : ''"
-      :title="newsItem.main_image ? newsItem.main_image.title : ''"
-    />
-    <p>{{ newsItem.author }}</p>
-    <div>
-      <p>{{ newsItem.category }}</p>
-      <p>{{ newsItem.body }}</p>
+    <div v-if="Object.keys(newsItem).length > 0">
+      <h2 class="mb-4">{{ newsItem.title }}</h2>
+      <img
+        class="main-image mb-4"
+        :src="newsItem.main_image ? newsItem.main_image.url : ''"
+        :alt="newsItem.main_image ? newsItem.main_image.alt : ''"
+        :title="newsItem.main_image ? newsItem.main_image.title : ''"
+      />
+      <p>{{ newsItem.author }}</p>
+      <div>
+        <p>{{ newsItem.category }}</p>
+        <p>{{ newsItem.body }}</p>
+      </div>
+    </div>
+    <div v-else>
+      <p>{{ notFoundMsg }}</p>
     </div>
   </div>
 </template>
@@ -19,7 +24,8 @@
 export default {
   data() {
     return {
-      newsItem: {}
+      newsItem: {},
+      notFoundMsg: ""
     };
   },
 
@@ -30,11 +36,22 @@ export default {
   methods: {
     fetchNewsItemById(newsItemId) {
       fetch(`${window.location.origin}/api/news/${newsItemId}`)
-        .then(res => res.json())
+        .then(res => {
+          if (res.ok === true && res.status === 200) {
+            return res.json();
+          } else if (res.statusText) {
+            throw res.statusText;
+          } else {
+            throw "News item couldn't be fetched.";
+          }
+        })
         .then(res => {
           this.newsItem = res.data;
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          this.notFoundMsg = `No news item with id ${newsItemId} could be found or fetched.`;
+          console.warn(err);
+        });
     }
   }
 };
