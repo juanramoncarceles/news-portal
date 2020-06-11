@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
         <link rel="stylesheet" type="text/css" href="/css/app.css">
-        <title>News Portal</title>
+        <title>Portal de noticias</title>
     </head>
     <body>
         <div id="app">

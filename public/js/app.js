@@ -21545,7 +21545,9 @@ var render = function() {
     { staticClass: "navbar navbar-expand-lg navbar-dark bg-info mb-2" },
     [
       _c("div", { staticClass: "container" }, [
-        _c("a", { staticClass: "navbar-brand" }, [_vm._v("News Portal")]),
+        _c("a", { staticClass: "navbar-brand" }, [
+          _vm._v("Portal de noticias")
+        ]),
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
@@ -21587,7 +21589,7 @@ var render = function() {
                       "aria-expanded": "false"
                     }
                   },
-                  [_vm._v("Categorias")]
+                  [_vm._v("Categorías")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -21844,12 +21846,33 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", [
-      _c("h2", { staticClass: "mb-4" }, [_vm._v("Contact")]),
+      _c("h2", { staticClass: "mb-4" }, [_vm._v("Contacto")]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col" }, [_vm._v("Calle...")]),
+        _c("div", { staticClass: "col" }, [
+          _c("p", { staticClass: "h5" }, [_vm._v("Dirección")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("Barcelona, Calle Calvino 63")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "h5" }, [_vm._v("Telefono")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("9492 345 456")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "h5" }, [_vm._v("Email")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("info@newsportal.com")])
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col" }, [_vm._v("MAP")])
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("img", {
+            staticClass: "img-thumbnail",
+            staticStyle: { width: "100%" },
+            attrs: {
+              src: "/storage/MapaContacto.png",
+              alt: "Mapa de localización en la ciudad."
+            }
+          })
+        ])
       ])
     ])
   }
@@ -22001,10 +22024,19 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.newsItem.author))]),
+          _c("p", { staticClass: "font-weight-bold" }, [
+            _vm._v(_vm._s(_vm.newsItem.author))
+          ]),
           _vm._v(" "),
           _c("div", [
-            _c("p", [_vm._v(_vm._s(_vm.newsItem.category))]),
+            _c(
+              "p",
+              {
+                staticClass: "badge badge-pill badge-secondary",
+                staticStyle: { "font-size": "1rem" }
+              },
+              [_vm._v(_vm._s(_vm.newsItem.category))]
+            ),
             _vm._v(" "),
             _c("p", [_vm._v(_vm._s(_vm.newsItem.body))])
           ])
@@ -22034,7 +22066,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("Not found")])
+  return _c("div", [_vm._v("Nothing was found.")])
 }
 var staticRenderFns = []
 render._withStripped = true

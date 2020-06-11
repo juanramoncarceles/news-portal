@@ -21,7 +21,7 @@ class NewsController extends Controller
                             ->ofCategories($request->category)
                             ->orderBy('publication_date', 'desc');
         
-        // If there are both 'paginate' and 'limit' the second would be ignored by Laravel.
+        // If both 'paginate' and 'limit' exist 'limit' would be ignored by Laravel.
         if ($request->has('paginate')) {
             // If the 'paginate' value is empty I paginate by 15.
             $paginate = $request->paginate ?? 15;

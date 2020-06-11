@@ -1,8 +1,8 @@
 <template>
   <div>
-    <navbar :categoriesData="categoriesList"></navbar>
+    <navbar :categoriesData="categoriesList" />
     <div class="container mt-5">
-      <router-view :categoriesData="categoriesList"></router-view>
+      <router-view :categoriesData="categoriesList" />
     </div>
   </div>
 </template>

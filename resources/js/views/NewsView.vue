@@ -8,9 +8,9 @@
         :alt="newsItem.main_image ? newsItem.main_image.alt : ''"
         :title="newsItem.main_image ? newsItem.main_image.title : ''"
       />
-      <p>{{ newsItem.author }}</p>
+      <p class="font-weight-bold">{{ newsItem.author }}</p>
       <div>
-        <p>{{ newsItem.category }}</p>
+        <p class="badge badge-pill badge-secondary" style="font-size:1rem;">{{ newsItem.category }}</p>
         <p>{{ newsItem.body }}</p>
       </div>
     </div>

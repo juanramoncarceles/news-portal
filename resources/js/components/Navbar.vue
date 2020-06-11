@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-info mb-2">
     <div class="container">
-      <a class="navbar-brand">News Portal</a>
+      <a class="navbar-brand">Portal de noticias</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -28,7 +28,7 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-            >Categorias</a>
+            >Categorías</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <router-link
                 class="dropdown-item"
