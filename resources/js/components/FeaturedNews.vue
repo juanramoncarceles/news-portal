@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h2 class="mb-4">Featured News</h2>
+    <h2 class="mb-4">{{ groupTitle }}</h2>
     <div class="row">
       <div class="col-md-6 mb-4" v-for="news in newsList" :key="news.id">
-        <div class="card">
+        <div class="card border-primary">
           <img
             class="card-img-top"
             :src="news.main_image ? news.main_image.url : ''"
@@ -12,15 +12,25 @@
           />
           <div class="card-body">
             <h4 class="card-title">{{ news.title }}</h4>
-            <h6 class="card-subtitle mb-2 text-muted">{{ news.author }}</h6>
+            <div class="row">
+              <div class="col">
+                <h5 class="card-subtitle mb-2 text-muted">{{ news.author }}</h5>
+              </div>
+              <div class="col">
+                <p
+                  class="font-weight-bold"
+                  style="text-align:right;"
+                >{{ news.publication_date.split(' ')[0] }}</p>
+              </div>
+            </div>
             <p class="card-text">{{ news.summary }}</p>
             <router-link
               class="btn btn-primary"
               :to="{ name: 'News', params: { id: news.id } }"
-            >Read more</router-link>
+            >Leer más</router-link>
           </div>
           <div class="card-footer">
-            <small class="text-muted">{{ news.category }}</small>
+            <span>{{ news.category }}</span>
           </div>
         </div>
       </div>
@@ -30,6 +40,12 @@
 
 <script>
 export default {
+  props: {
+    groupTitle: {
+      type: String
+    }
+  },
+
   data() {
     return {
       newsList: []

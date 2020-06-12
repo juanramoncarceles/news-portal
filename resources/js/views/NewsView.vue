@@ -1,18 +1,26 @@
 <template>
   <div>
     <div v-if="Object.keys(newsItem).length > 0">
-      <h2 class="mb-4">{{ newsItem.title }}</h2>
+      <h2 class="mb-4" style="text-align:center;">{{ newsItem.title }}</h2>
       <img
         class="main-image mb-4"
         :src="newsItem.main_image ? newsItem.main_image.url : ''"
         :alt="newsItem.main_image ? newsItem.main_image.alt : ''"
         :title="newsItem.main_image ? newsItem.main_image.title : ''"
       />
-      <p class="font-weight-bold">{{ newsItem.author }}</p>
-      <div>
-        <p class="badge badge-pill badge-secondary" style="font-size:1rem;">{{ newsItem.category }}</p>
-        <p>{{ newsItem.body }}</p>
+      <div class="row">
+        <div class="col">
+          <h5 class="card-subtitle mb-2 text-muted">{{ newsItem.author }}</h5>
+        </div>
+        <div class="col" style="text-align:right;">
+          <p
+            class="badge badge-pill badge-secondary"
+            style="font-size:1rem;"
+          >{{ newsItem.category }}</p>
+        </div>
       </div>
+      <p class="font-weight-bold">{{ newsItem.publication_date.split(' ')[0] }}</p>
+      <p>{{ newsItem.body }}</p>
     </div>
     <div v-else>
       <p>{{ notFoundMsg }}</p>

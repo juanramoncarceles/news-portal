@@ -1982,7 +1982,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    groupTitle: {
+      type: String
+    }
+  },
   data: function data() {
     return {
       newsList: []
@@ -2108,6 +2123,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     newsItemData: {
@@ -2172,6 +2208,9 @@ __webpack_require__.r(__webpack_exports__);
       "default": function _default() {
         return [];
       }
+    },
+    listTitle: {
+      type: String
     }
   },
   data: function data() {
@@ -2221,6 +2260,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2342,6 +2386,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21461,14 +21513,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h2", { staticClass: "mb-4" }, [_vm._v("Featured News")]),
+    _c("h2", { staticClass: "mb-4" }, [_vm._v(_vm._s(_vm.groupTitle))]),
     _vm._v(" "),
     _c(
       "div",
       { staticClass: "row" },
       _vm._l(_vm.newsList, function(news) {
         return _c("div", { key: news.id, staticClass: "col-md-6 mb-4" }, [
-          _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card border-primary" }, [
             _c("img", {
               staticClass: "card-img-top",
               attrs: {
@@ -21486,8 +21538,23 @@ var render = function() {
                   _vm._v(_vm._s(news.title))
                 ]),
                 _vm._v(" "),
-                _c("h6", { staticClass: "card-subtitle mb-2 text-muted" }, [
-                  _vm._v(_vm._s(news.author))
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _c("h5", { staticClass: "card-subtitle mb-2 text-muted" }, [
+                      _vm._v(_vm._s(news.author))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c(
+                      "p",
+                      {
+                        staticClass: "font-weight-bold",
+                        staticStyle: { "text-align": "right" }
+                      },
+                      [_vm._v(_vm._s(news.publication_date.split(" ")[0]))]
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("p", { staticClass: "card-text" }, [
@@ -21500,16 +21567,14 @@ var render = function() {
                     staticClass: "btn btn-primary",
                     attrs: { to: { name: "News", params: { id: news.id } } }
                   },
-                  [_vm._v("Read more")]
+                  [_vm._v("Leer más")]
                 )
               ],
               1
             ),
             _vm._v(" "),
             _c("div", { staticClass: "card-footer" }, [
-              _c("small", { staticClass: "text-muted" }, [
-                _vm._v(_vm._s(news.category))
-              ])
+              _c("span", [_vm._v(_vm._s(news.category))])
             ])
           ])
         ])
@@ -21696,7 +21761,50 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col mt-4 mt-md-0" }, [
-        _c("h3", [_vm._v(_vm._s(_vm.newsItemData.title))]),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("h3", { staticClass: "mb-3" }, [
+              _vm._v(_vm._s(_vm.newsItemData.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "col-6 col-lg-4",
+              staticStyle: { "text-align": "right" }
+            },
+            [
+              _c(
+                "p",
+                {
+                  staticClass: "badge badge-pill badge-secondary",
+                  staticStyle: { "font-size": "1rem" }
+                },
+                [_vm._v(_vm._s(_vm.newsItemData.category))]
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("h5", { staticClass: "card-subtitle mb-2 text-muted" }, [
+              _vm._v(_vm._s(_vm.newsItemData.author))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col" }, [
+            _c(
+              "p",
+              {
+                staticClass: "font-weight-bold",
+                staticStyle: { "text-align": "right" }
+              },
+              [_vm._v(_vm._s(_vm.newsItemData.publication_date.split(" ")[0]))]
+            )
+          ])
+        ]),
         _vm._v(" "),
         _c("p", [_vm._v(_vm._s(_vm.newsItemData.summary))])
       ])
@@ -21728,7 +21836,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h2", { staticClass: "mb-4" }, [_vm._v("Other news")]),
+      _c("h2", { staticClass: "mb-4" }, [_vm._v(_vm._s(_vm.listTitle))]),
       _vm._v(" "),
       _c("nav", { attrs: { "aria-label": "Page navigation" } }, [
         _c("ul", { staticClass: "pagination" }, [
@@ -21752,7 +21860,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Previous")]
+                [_vm._v("Previa")]
               )
             ]
           ),
@@ -21760,9 +21868,9 @@ var render = function() {
           _c("li", { staticClass: "page-item disabled" }, [
             _c("a", { staticClass: "page-link text-dark" }, [
               _vm._v(
-                "Page " +
+                "Página " +
                   _vm._s(_vm.pagination.current_page) +
-                  " of " +
+                  " de " +
                   _vm._s(_vm.pagination.last_page)
               )
             ])
@@ -21788,7 +21896,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Next")]
+                [_vm._v("Siguiente")]
               )
             ]
           )
@@ -21901,14 +22009,20 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("featured-news", { on: { featuredIds: _vm.onFeaturedIds } }),
+      _c("featured-news", {
+        attrs: { "group-title": "Noticias destacadas" },
+        on: { featuredIds: _vm.onFeaturedIds }
+      }),
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
       _vm.featuredIds.length > 0
         ? _c("news-list", {
             staticClass: "mt-5",
-            attrs: { excludeIds: _vm.featuredIds }
+            attrs: {
+              excludeIds: _vm.featuredIds,
+              "list-title": "Otras noticias"
+            }
           })
         : _vm._e()
     ],
@@ -22009,9 +22123,11 @@ var render = function() {
   return _c("div", [
     Object.keys(_vm.newsItem).length > 0
       ? _c("div", [
-          _c("h2", { staticClass: "mb-4" }, [
-            _vm._v(_vm._s(_vm.newsItem.title))
-          ]),
+          _c(
+            "h2",
+            { staticClass: "mb-4", staticStyle: { "text-align": "center" } },
+            [_vm._v(_vm._s(_vm.newsItem.title))]
+          ),
           _vm._v(" "),
           _c("img", {
             staticClass: "main-image mb-4",
@@ -22024,22 +22140,34 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("p", { staticClass: "font-weight-bold" }, [
-            _vm._v(_vm._s(_vm.newsItem.author))
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col" }, [
+              _c("h5", { staticClass: "card-subtitle mb-2 text-muted" }, [
+                _vm._v(_vm._s(_vm.newsItem.author))
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col", staticStyle: { "text-align": "right" } },
+              [
+                _c(
+                  "p",
+                  {
+                    staticClass: "badge badge-pill badge-secondary",
+                    staticStyle: { "font-size": "1rem" }
+                  },
+                  [_vm._v(_vm._s(_vm.newsItem.category))]
+                )
+              ]
+            )
           ]),
           _vm._v(" "),
-          _c("div", [
-            _c(
-              "p",
-              {
-                staticClass: "badge badge-pill badge-secondary",
-                staticStyle: { "font-size": "1rem" }
-              },
-              [_vm._v(_vm._s(_vm.newsItem.category))]
-            ),
-            _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.newsItem.body))])
-          ])
+          _c("p", { staticClass: "font-weight-bold" }, [
+            _vm._v(_vm._s(_vm.newsItem.publication_date.split(" ")[0]))
+          ]),
+          _vm._v(" "),
+          _c("p", [_vm._v(_vm._s(_vm.newsItem.body))])
         ])
       : _c("div", [_c("p", [_vm._v(_vm._s(_vm.notFoundMsg))])])
   ])

@@ -9,7 +9,28 @@
         />
       </div>
       <div class="col mt-4 mt-md-0">
-        <h3>{{ newsItemData.title }}</h3>
+        <div class="row">
+          <div class="col">
+            <h3 class="mb-3">{{ newsItemData.title }}</h3>
+          </div>
+          <div class="col-6 col-lg-4" style="text-align:right;">
+            <p
+              class="badge badge-pill badge-secondary"
+              style="font-size:1rem;"
+            >{{ newsItemData.category }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h5 class="card-subtitle mb-2 text-muted">{{ newsItemData.author }}</h5>
+          </div>
+          <div class="col">
+            <p
+              class="font-weight-bold"
+              style="text-align:right;"
+            >{{ newsItemData.publication_date.split(' ')[0] }}</p>
+          </div>
+        </div>
         <p>{{ newsItemData.summary }}</p>
       </div>
     </div>

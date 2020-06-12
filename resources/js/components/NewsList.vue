@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-4">Other news</h2>
+    <h2 class="mb-4">{{ listTitle }}</h2>
     <nav aria-label="Page navigation">
       <ul class="pagination">
         <li
@@ -8,19 +8,19 @@
           style="cursor:pointer"
           v-bind:class="[{disabled: !pagination.prev_page_url}]"
         >
-          <a class="page-link" @click="fetchNewsPaginated(pagination.prev_page_url)">Previous</a>
+          <a class="page-link" @click="fetchNewsPaginated(pagination.prev_page_url)">Previa</a>
         </li>
         <li class="page-item disabled">
           <a
             class="page-link text-dark"
-          >Page {{ pagination.current_page }} of {{ pagination.last_page }}</a>
+          >Página {{ pagination.current_page }} de {{ pagination.last_page }}</a>
         </li>
         <li
           class="page-item"
           style="cursor:pointer"
           v-bind:class="[{disabled: !pagination.next_page_url}]"
         >
-          <a class="page-link" @click="fetchNewsPaginated(pagination.next_page_url)">Next</a>
+          <a class="page-link" @click="fetchNewsPaginated(pagination.next_page_url)">Siguiente</a>
         </li>
       </ul>
     </nav>
@@ -44,6 +44,9 @@ export default {
       default: function() {
         return [];
       }
+    },
+    listTitle: {
+      type: String
     }
   },
 
