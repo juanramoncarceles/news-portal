@@ -57,7 +57,7 @@ export default {
           this.newsItem = res.data;
         })
         .catch(err => {
-          this.notFoundMsg = `No news item with id ${newsItemId} could be found or fetched.`;
+          this.notFoundMsg = `No fue encontrada ninguna noticia con id ${newsItemId} :(`;
           console.warn(err);
         });
     }

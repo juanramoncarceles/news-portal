@@ -1,18 +1,13 @@
 <template>
   <div>
-    <div v-if="newsList.length > 0">
-      <h2 class="mb-4" v-show="categoryName">Noticias de {{ categoryName }}</h2>
-      <router-link
-        :to="{ name: 'News', params: { id: news.id } }"
-        tag="div"
-        v-for="news in newsList"
-        :key="news.id"
-        style="cursor:pointer"
-      >
-        <news-item-card-small :newsItemData="news" :show-category="false" class="mb-3" />
-      </router-link>
-    </div>
-    <div v-else>
+    <div>
+      <news-list
+        :pagination-amount="5"
+        :category-ids="[categoryId]"
+        :list-title="'Noticias de ' + categoryName"
+        :show-items-category="false"
+        @fetched="onFetched"
+      />
       <p>{{ notFoundMsg }}</p>
     </div>
   </div>
@@ -29,6 +24,7 @@ export default {
   data() {
     return {
       newsList: [],
+      newsAvailable: false,
       categoryId: this.$route.params.id,
       categoryName: "",
       notFoundMsg: ""
@@ -39,7 +35,7 @@ export default {
     // When the route changes the function will be called.
     $route: function(newRoute, oldRoute) {
       this.setCategoryName(newRoute.params.id);
-      this.fetchNewsByCategory(newRoute.params.id);
+      this.categoryId = newRoute.params.id;
     },
     // This will be required when the first page loaded is a category page.
     categoriesData: function(newValue, oldValue) {
@@ -48,7 +44,6 @@ export default {
   },
 
   created() {
-    this.fetchNewsByCategory(this.categoryId);
     // This is required when coming from a different page than a category page.
     if (this.categoriesData.length > 1) {
       this.setCategoryName(this.categoryId);
@@ -56,17 +51,11 @@ export default {
   },
 
   methods: {
-    fetchNewsByCategory(categoryId = 1) {
-      fetch(`${window.location.origin}/api/news?category=${categoryId}`)
-        .then(res => res.json())
-        .then(res => {
-          this.newsList = res.data;
-          if (res.data.length === 0) {
-            this.notFoundMsg = `No news for that category could be found or fetched.`;
-            console.warn(this.notFoundMsg);
-          }
-        })
-        .catch(err => console.log(err));
+    onFetched(fetched) {
+      this.newsAvailable = fetched;
+      if (!fetched) {
+        this.notFoundMsg = `Ninguna noticia con esa categoría fue encontrada :(`;
+      }
     },
 
     setCategoryName(id) {

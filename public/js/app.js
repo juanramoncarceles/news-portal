@@ -2205,13 +2205,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    paginationAmount: {
+      type: Number,
+      "default": 10
+    },
     excludeIds: {
       type: Array,
       "default": function _default() {
         return [];
       }
+    },
+    categoryIds: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    },
+    showItemsCategory: {
+      type: Boolean,
+      "default": true
     },
     listTitle: {
       type: String
@@ -2223,6 +2239,11 @@ __webpack_require__.r(__webpack_exports__);
       pagination: {}
     };
   },
+  watch: {
+    categoryIds: function categoryIds(newValue, oldValue) {
+      this.fetchNewsPaginated();
+    }
+  },
   created: function created() {
     this.fetchNewsPaginated();
   },
@@ -2230,13 +2251,15 @@ __webpack_require__.r(__webpack_exports__);
     fetchNewsPaginated: function fetchNewsPaginated() {
       var _this = this;
 
-      var page_url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/api/news?paginate=10".concat(this.excludeIds.length > 0 ? "&exclude=" + this.excludeIds.join() : "");
+      var page_url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/api/news?paginate=".concat(this.paginationAmount).concat(this.excludeIds.length > 0 ? "&exclude=" + this.excludeIds.join() : "").concat(this.categoryIds.length > 0 ? "&category=" + this.categoryIds.join() : "");
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
         _this.newsList = res.data;
 
         _this.makePagination(res.meta, res.links);
+
+        _this.$emit("fetched", res.data.length > 0);
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2316,11 +2339,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     categoriesData: {
@@ -2330,6 +2348,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       newsList: [],
+      newsAvailable: false,
       categoryId: this.$route.params.id,
       categoryName: "",
       notFoundMsg: ""
@@ -2339,7 +2358,7 @@ __webpack_require__.r(__webpack_exports__);
     // When the route changes the function will be called.
     $route: function $route(newRoute, oldRoute) {
       this.setCategoryName(newRoute.params.id);
-      this.fetchNewsByCategory(newRoute.params.id);
+      this.categoryId = newRoute.params.id;
     },
     // This will be required when the first page loaded is a category page.
     categoriesData: function categoriesData(newValue, oldValue) {
@@ -2347,29 +2366,18 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.fetchNewsByCategory(this.categoryId); // This is required when coming from a different page than a category page.
-
+    // This is required when coming from a different page than a category page.
     if (this.categoriesData.length > 1) {
       this.setCategoryName(this.categoryId);
     }
   },
   methods: {
-    fetchNewsByCategory: function fetchNewsByCategory() {
-      var _this = this;
+    onFetched: function onFetched(fetched) {
+      this.newsAvailable = fetched;
 
-      var categoryId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      fetch("".concat(window.location.origin, "/api/news?category=").concat(categoryId)).then(function (res) {
-        return res.json();
-      }).then(function (res) {
-        _this.newsList = res.data;
-
-        if (res.data.length === 0) {
-          _this.notFoundMsg = "No news for that category could be found or fetched.";
-          console.warn(_this.notFoundMsg);
-        }
-      })["catch"](function (err) {
-        return console.log(err);
-      });
+      if (!fetched) {
+        this.notFoundMsg = "Ninguna noticia con esa categor\xEDa fue encontrada :(";
+      }
     },
     setCategoryName: function setCategoryName(id) {
       if (id > 0 && id <= this.categoriesData.length) {
@@ -2445,7 +2453,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.newsItem = res.data;
       })["catch"](function (err) {
-        _this.notFoundMsg = "No news item with id ".concat(newsItemId, " could be found or fetched.");
+        _this.notFoundMsg = "No fue encontrada ninguna noticia con id ".concat(newsItemId, " :(");
         console.warn(err);
       });
     }
@@ -21842,72 +21850,76 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h2", { staticClass: "mb-4" }, [_vm._v(_vm._s(_vm.listTitle))]),
-      _vm._v(" "),
-      _c("nav", { attrs: { "aria-label": "Page navigation" } }, [
-        _c("ul", { staticClass: "pagination" }, [
-          _c(
-            "li",
-            {
-              staticClass: "page-item",
-              class: [{ disabled: !_vm.pagination.prev_page_url }],
-              staticStyle: { cursor: "pointer" }
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  on: {
-                    click: function($event) {
-                      return _vm.fetchNewsPaginated(
-                        _vm.pagination.prev_page_url
-                      )
-                    }
-                  }
-                },
-                [_vm._v("Previa")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item disabled" }, [
-            _c("a", { staticClass: "page-link text-dark" }, [
-              _vm._v(
-                "Página " +
-                  _vm._s(_vm.pagination.current_page) +
-                  " de " +
-                  _vm._s(_vm.pagination.last_page)
-              )
+      _vm.newsList.length > 0
+        ? _c("div", [
+            _c("h2", { staticClass: "mb-4" }, [_vm._v(_vm._s(_vm.listTitle))]),
+            _vm._v(" "),
+            _c("nav", { attrs: { "aria-label": "Page navigation" } }, [
+              _c("ul", { staticClass: "pagination" }, [
+                _c(
+                  "li",
+                  {
+                    staticClass: "page-item",
+                    class: [{ disabled: !_vm.pagination.prev_page_url }],
+                    staticStyle: { cursor: "pointer" }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "page-link",
+                        on: {
+                          click: function($event) {
+                            return _vm.fetchNewsPaginated(
+                              _vm.pagination.prev_page_url
+                            )
+                          }
+                        }
+                      },
+                      [_vm._v("Previa")]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("li", { staticClass: "page-item disabled" }, [
+                  _c("a", { staticClass: "page-link text-dark" }, [
+                    _vm._v(
+                      "Página " +
+                        _vm._s(_vm.pagination.current_page) +
+                        " de " +
+                        _vm._s(_vm.pagination.last_page)
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass: "page-item",
+                    class: [{ disabled: !_vm.pagination.next_page_url }],
+                    staticStyle: { cursor: "pointer" }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "page-link",
+                        on: {
+                          click: function($event) {
+                            return _vm.fetchNewsPaginated(
+                              _vm.pagination.next_page_url
+                            )
+                          }
+                        }
+                      },
+                      [_vm._v("Siguiente")]
+                    )
+                  ]
+                )
+              ])
             ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "page-item",
-              class: [{ disabled: !_vm.pagination.next_page_url }],
-              staticStyle: { cursor: "pointer" }
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  on: {
-                    click: function($event) {
-                      return _vm.fetchNewsPaginated(
-                        _vm.pagination.next_page_url
-                      )
-                    }
-                  }
-                },
-                [_vm._v("Siguiente")]
-              )
-            ]
-          )
-        ])
-      ]),
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.newsList, function(news) {
         return _c(
@@ -21920,7 +21932,10 @@ var render = function() {
           [
             _c("news-item-card-small", {
               staticClass: "mb-3",
-              attrs: { newsItemData: news, "show-category": true }
+              attrs: {
+                newsItemData: news,
+                "show-category": _vm.showItemsCategory
+              }
             })
           ],
           1
@@ -22026,7 +22041,7 @@ var render = function() {
         ? _c("news-list", {
             staticClass: "mt-5",
             attrs: {
-              excludeIds: _vm.featuredIds,
+              "exclude-ids": _vm.featuredIds,
               "list-title": "Otras noticias"
             }
           })
@@ -22058,50 +22073,23 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.newsList.length > 0
-      ? _c(
-          "div",
-          [
-            _c(
-              "h2",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.categoryName,
-                    expression: "categoryName"
-                  }
-                ],
-                staticClass: "mb-4"
-              },
-              [_vm._v("Noticias de " + _vm._s(_vm.categoryName))]
-            ),
-            _vm._v(" "),
-            _vm._l(_vm.newsList, function(news) {
-              return _c(
-                "router-link",
-                {
-                  key: news.id,
-                  staticStyle: { cursor: "pointer" },
-                  attrs: {
-                    to: { name: "News", params: { id: news.id } },
-                    tag: "div"
-                  }
-                },
-                [
-                  _c("news-item-card-small", {
-                    staticClass: "mb-3",
-                    attrs: { newsItemData: news, "show-category": false }
-                  })
-                ],
-                1
-              )
-            })
-          ],
-          2
-        )
-      : _c("div", [_c("p", [_vm._v(_vm._s(_vm.notFoundMsg))])])
+    _c(
+      "div",
+      [
+        _c("news-list", {
+          attrs: {
+            "pagination-amount": 5,
+            "category-ids": [_vm.categoryId],
+            "list-title": "Noticias de " + _vm.categoryName,
+            "show-items-category": false
+          },
+          on: { fetched: _vm.onFetched }
+        }),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.notFoundMsg))])
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -22200,7 +22188,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("Nothing was found.")])
+  return _c("div", [_vm._v("Nada fue encontrado :(")])
 }
 var staticRenderFns = []
 render._withStripped = true

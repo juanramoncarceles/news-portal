@@ -1,3 +1,3 @@
 <template>
-  <div>Nothing was found.</div>
+  <div>Nada fue encontrado :(</div>
 </template>

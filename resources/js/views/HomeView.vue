@@ -4,7 +4,7 @@
     <hr />
     <news-list
       v-if="featuredIds.length > 0"
-      :excludeIds="featuredIds"
+      :exclude-ids="featuredIds"
       list-title="Otras noticias"
       class="mt-5"
     />
