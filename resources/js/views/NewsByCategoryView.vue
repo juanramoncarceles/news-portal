@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="newsList.length > 0">
-      <h2 class="mb-4" v-show="this.categoryName">Noticias de {{ this.categoryName }}</h2>
+      <h2 class="mb-4" v-show="categoryName">Noticias de {{ categoryName }}</h2>
       <router-link
         :to="{ name: 'News', params: { id: news.id } }"
         tag="div"
@@ -9,7 +9,7 @@
         :key="news.id"
         style="cursor:pointer"
       >
-        <news-item-card-small :newsItemData="news" class="mb-3"></news-item-card-small>
+        <news-item-card-small :newsItemData="news" :show-category="false" class="mb-3" />
       </router-link>
     </div>
     <div v-else>

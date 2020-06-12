@@ -13,7 +13,7 @@
           <div class="col">
             <h3 class="mb-3">{{ newsItemData.title }}</h3>
           </div>
-          <div class="col-6 col-lg-4" style="text-align:right;">
+          <div v-if="showCategory" class="col-6 col-lg-4" style="text-align:right;">
             <p
               class="badge badge-pill badge-secondary"
               style="font-size:1rem;"
@@ -42,6 +42,10 @@ export default {
   props: {
     newsItemData: {
       type: Object
+    },
+    showCategory: {
+      type: Boolean,
+      default: true
     }
   }
 };

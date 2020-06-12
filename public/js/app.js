@@ -2148,6 +2148,10 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     newsItemData: {
       type: Object
+    },
+    showCategory: {
+      type: Boolean,
+      "default": true
     }
   }
 });
@@ -21768,23 +21772,25 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "col-6 col-lg-4",
-              staticStyle: { "text-align": "right" }
-            },
-            [
-              _c(
-                "p",
+          _vm.showCategory
+            ? _c(
+                "div",
                 {
-                  staticClass: "badge badge-pill badge-secondary",
-                  staticStyle: { "font-size": "1rem" }
+                  staticClass: "col-6 col-lg-4",
+                  staticStyle: { "text-align": "right" }
                 },
-                [_vm._v(_vm._s(_vm.newsItemData.category))]
+                [
+                  _c(
+                    "p",
+                    {
+                      staticClass: "badge badge-pill badge-secondary",
+                      staticStyle: { "font-size": "1rem" }
+                    },
+                    [_vm._v(_vm._s(_vm.newsItemData.category))]
+                  )
+                ]
               )
-            ]
-          )
+            : _vm._e()
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -21914,7 +21920,7 @@ var render = function() {
           [
             _c("news-item-card-small", {
               staticClass: "mb-3",
-              attrs: { newsItemData: news }
+              attrs: { newsItemData: news, "show-category": true }
             })
           ],
           1
@@ -22063,13 +22069,13 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: this.categoryName,
-                    expression: "this.categoryName"
+                    value: _vm.categoryName,
+                    expression: "categoryName"
                   }
                 ],
                 staticClass: "mb-4"
               },
-              [_vm._v("Noticias de " + _vm._s(this.categoryName))]
+              [_vm._v("Noticias de " + _vm._s(_vm.categoryName))]
             ),
             _vm._v(" "),
             _vm._l(_vm.newsList, function(news) {
@@ -22086,7 +22092,7 @@ var render = function() {
                 [
                   _c("news-item-card-small", {
                     staticClass: "mb-3",
-                    attrs: { newsItemData: news }
+                    attrs: { newsItemData: news, "show-category": false }
                   })
                 ],
                 1

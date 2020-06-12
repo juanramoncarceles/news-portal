@@ -31,7 +31,7 @@
       :key="news.id"
       style="cursor:pointer"
     >
-      <news-item-card-small :newsItemData="news" class="mb-3"></news-item-card-small>
+      <news-item-card-small :newsItemData="news" :show-category="true" class="mb-3" />
     </router-link>
   </div>
 </template>
